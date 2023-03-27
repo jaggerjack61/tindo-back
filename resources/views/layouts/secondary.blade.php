@@ -42,9 +42,9 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="#" class="menu-link">
+                    <a href="{{route('show-messages')}}" class="menu-link {{Route::currentRouteName()=='show-messages'?'active':''}}">
                         <i class="menu-icon tf-icons bx bx-chat"></i>
-                        <div data-i18n="Analytics">Messages</div>
+                        <div data-i18n="Analytics">Messages <span class="rounded bg-danger p-1 text-white {{$messageCount>0?'':'d-none'}}">{{$messageCount}}</span></div>
                     </a>
                 </li>
                 <li class="menu-item">

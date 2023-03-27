@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,6 +29,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/sell/{id}','sellPainting')->name('sell-painting');
         Route::get('/delete/{id}','deletePainting')->name('delete-painting');
         Route::get('/restore/{id}','restorePainting')->name('restore-painting');
+    });
+    Route::controller(MessageController::class)->group(function () {
+        Route::prefix('/messages')->group(function () {
+           Route::get('','showMessages')->name('show-messages');
+           Route::get('read/{id}','readMessage')->name('read-message');
+           Route::get('unread/{id}','unreadMessage')->name('unread-message');
+        });
     });
 });
 

@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/gallery',[APIController::class,'showAllPaintings']);
+Route::post('/message',[APIController::class,'saveMessage']);
