@@ -15,9 +15,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+
+
+Route::middleware('guest')->group(function (){
+    Route::controller(APIController::class)->group(function (){
+        Route::get('/gallery','showAllPaintings');
+        Route::post('/message','saveMessage');
+
+        Route::post('/login','login');
+        Route::post('/register','register');
+
+    });
+
+
 });
 
-Route::get('/gallery',[APIController::class,'showAllPaintings']);
-Route::post('/message',[APIController::class,'saveMessage']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::controller(APIController::class)->group(function (){
+        Route::get('/user','getUser');
+    });
+});
+Route::post('/tokens/create', function (Request $request) {
+    $token = $request->user()->createToken($request->token_name);
+    return ['token' => $token->plainTextToken];
+});

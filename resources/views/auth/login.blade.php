@@ -13,9 +13,9 @@
                         <div class="app-brand justify-content-center">
                             <a href="index.html" class="app-brand-link gap-2">
                   <span class="app-brand-logo demo">
-                <img src="/assets/img/elements/logo.png" width="28px">
+                <img src="/assets/img/elements/admin2.jpg" width="42px">
               </span>
-                                <span class="app-brand-text demo text-body fw-bolder">Art Gallery Admin</span>
+                                <span class="demo text-body fw-bolder">Art Gallery Admin</span>
                             </a>
                         </div>
                         <!-- /Logo -->
