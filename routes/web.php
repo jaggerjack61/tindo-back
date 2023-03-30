@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,11 +38,21 @@ Route::middleware('auth')->group(function () {
            Route::get('unread/{id}','unreadMessage')->name('unread-message');
         });
     });
+    Route::controller(UserController::class)->group(function () {
+        Route::prefix('/users')->group(function () {
+            Route::get('','showUsers')->name('show-users');
+            Route::post('','newUser')->name('new-user');
+            Route::get('status/activate/{user}','activateUser')->name('activate-user');
+            Route::get('status/deactivate/{user}','deactivateUser')->name('deactivate-user');
+            Route::get('access_level/promote/{user}','promoteUser')->name('promote-user');
+            Route::get('access_level/demote/{user}','demoteUser')->name('demote-user');
+        });
+    });
 });
 
 
 Route::controller(AuthController::class)->group(function () {
-    Route::get('/login','showLogin')->name('show-login');
-    Route::post('/login','login')->name('login');
+    Route::get('/login','showLogin')->name('show-login')->middleware('guest');
+    Route::post('/login','login')->name('login')->middleware('guest');;
     Route::get('/logout','logout')->name('logout')->middleware('auth');
 });

@@ -39,12 +39,14 @@
                     <li>
                         <div class="dropdown-divider"></div>
                     </li>
+                    @if(auth()->user()->email != 'admin@example.com')
                     <li>
                         <a class="dropdown-item" href="{{route('show-profile')}}">
                             <i class="bx bx-user me-2"></i>
                             <span class="align-middle">My Profile</span>
                         </a>
                     </li>
+                    @endif
 
                     <li>
                         <a class="dropdown-item" href="{{route('logout')}}">
