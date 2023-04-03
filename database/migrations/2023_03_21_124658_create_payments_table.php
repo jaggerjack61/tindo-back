@@ -18,8 +18,10 @@ return new class extends Migration
             $table->string('reference');
             $table->string('email');
             $table->string('status')->default('pending');
-            $table->string('phone')->default('none');
-            $table->float('amount')->default(0.00);
+            $table->string('phone')->nullable();
+            $table->float('amount',total: 12,places: 2)->default(0.00);
+            $table->string('polling_url')->nullable();
+            $table->string('redirect_url')->nullable();
             $table->timestamps();
         });
     }

@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->string('user_id');
+            $table->string('address', length:1000);
+            $table->string('reference');
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }

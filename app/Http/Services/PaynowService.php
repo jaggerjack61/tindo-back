@@ -2,7 +2,6 @@
 
 namespace App\Http\Services;
 use App\Models\Painting;
-use App\Models\WhatsappSetting;
 use Paynow\Payments\Paynow;
 
 class PaynowService{
@@ -11,22 +10,24 @@ class PaynowService{
     public $key = 'df033924-f9bb-4056-bc77-934657ee2ab1';
     public $returnUrl = 'https://c506-104-223-93-213.ngrok.io/paynow/return';
     public  $resultUrl = 'https://c506-104-223-93-213.ngrok.io/api/paynow/result';
+    public $order;
 
 
     public function __construct()
     {
         $this->paynow = new Paynow($this->id,$this->key,$this->returnUrl,$this->resultUrl);
+        $this->order = new OrderService();
     }
 
 
-    public function makeMobilePayment($uniqueId,$email,$phone,$network,$order)
+    public function makeMobilePayment($order)
     {
-        if($this->verifyOrder($order)){
-            $payment=$this->paynow->createPayment($uniqueId,$email);
-            foreach($order as $item){
+        if($this->order->verifyOrder($order)){
+            $payment=$this->paynow->createPayment($order->uniqueId,$order->email);
+            foreach($order->items as $item){
                 $payment->add($item->name,$item->price);
             }
-            $response = $this->paynow->sendMobile($payment, $phone, $network);
+            $response = $this->paynow->sendMobile($payment, $order->phone, $order->network);
             return true;
         }
         else{
@@ -36,11 +37,11 @@ class PaynowService{
 
     }
 
-    public function makeBankPayment($uniqueId,$email,$order)
+    public function makeBankPayment($order)
     {
-        if($this->verifyOrder($order)){
-            $payment=$this->paynow->createPayment($uniqueId,$email);
-            foreach($order as $item){
+        if($this->order->verifyOrder($order)){
+            $payment=$this->paynow->createPayment($order->reference,$order->email);
+            foreach($order->items as $item){
                 $payment->add($item->name,$item->price);
             }
             $response = $this->paynow->send($payment);
@@ -50,15 +51,7 @@ class PaynowService{
 
     }
 
-    public function verifyOrder($order)
-    {
-        foreach($order as $item){
-            if(!Painting::find($item->id)->status=='available'){
-                return false;
-            }
-        }
-        return true;
-    }
+
 
 
 
