@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\APIController;
+use App\Http\Controllers\PaynowController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,22 +21,28 @@ use Illuminate\Support\Facades\Route;
 //});
 
 
-Route::middleware('guest')->group(function (){
-    Route::controller(APIController::class)->group(function (){
-        Route::get('/gallery','showAllPaintings');
-        Route::post('/message','saveMessage');
-
-        Route::post('/login','login');
-        Route::post('/register','register');
-
+Route::middleware('guest')->group(function () {
+    Route::controller(APIController::class)->group(function () {
+        Route::get('/gallery', 'showAllPaintings');
+        Route::post('/message', 'saveMessage');
+        Route::post('/login', 'login');
+        Route::post('/register', 'register');
+    });
+    Route::controller(PaynowController::class)->group(function () {
+        Route::post('/paynow/result', 'handleResult');
     });
 
 
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::controller(APIController::class)->group(function (){
-        Route::get('/user','getUser');
+    Route::controller(APIController::class)->group(function () {
+        Route::get('/user', 'getUser');
+    });
+    Route::controller(PaynowController::class)->group(function () {
+        Route::post('/paynow/bank', 'bankPayment');
+        Route::post('/paynow/mobile', 'mobilePayment');
+        Route::post('/paynow/status', 'paymentStatus');
     });
 });
 Route::post('/tokens/create', function (Request $request) {

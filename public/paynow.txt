@@ -1,0 +1,1 @@
+{"reference":"2-77pr4qzo576","paynowreference":"16287645","amount":"1.00","status":"Paid","pollurl":"https:\/\/www.paynow.co.zw\/Interface\/CheckPayment\/?guid=da9403ee-a022-4017-abed-6ca14261c8f4","hash":"3AB3D5F5B9ECAF58A9CD6541142C4ABE7491B664D2E17876DE67585FD2E3A1493E86FEB365F9234236C5176C4C28A35E052ECF5349A60B4CCA46F02A860F8603"}

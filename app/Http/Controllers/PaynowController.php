@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\PaymentService;
 use App\Http\Services\PaynowService;
 use App\Models\Payment;
 use Illuminate\Http\Request;
@@ -9,30 +10,38 @@ use Illuminate\Http\Request;
 class PaynowController extends Controller
 {
 
-    public $service;
+    public $paynowService;
+    public $paymentService;
 
     public function __construct()
     {
-        $this->service = new PaynowService();
+        $this->paynowService = new PaynowService();
+        $this->paymentService = new PaymentService();
     }
 
     public function mobilePayment(Request $request)
     {
+
         try {
-            if ($this->service->makeMobilePayment($request->uniqueId, $request->email, $request->phone, $request->network, $request->order)) {
+            $string = json_encode($request->all());
+            $file = fopen("output.txt", "w");
+            fwrite($file, $string);
+            fclose($file);
+            $request->phone = '0'.$request->phone;
+            if ($this->paynowService->makeMobilePayment($request)) {
                 return response()->json(['message' => 'success']);
             } else {
                 return response()->json(['message' => 'invalid order']);
             }
         } catch (\Exception $e) {
-            return response()->json(['message' => 'failed']);
+            return response()->json(['message' => 'failed:'.$e->getMessage()]);
         }
     }
 
     public function bankPayment(Request $request)
     {
         try {
-            if ($this->service->makeBankPayment($request->uniqueId, $request->email, $request->order)) {
+            if ($this->paynowService->makeBankPayment($request->all())) {
                 return response()->json(['message' => 'success']);
             } else {
                 return response()->json(['message' => 'invalid order']);
@@ -46,7 +55,7 @@ class PaynowController extends Controller
     public function paymentStatus(Request $request)
     {
         try {
-            $result = Payment::where('reference', $request->uniqueId)->first();
+            $result = Payment::where('reference', $request->reference)->first();
             return response()->json(['message' => 'success', 'payment' => $result]);
         } catch (\Exception $e) {
             return response()->json(['message' => 'failed']);
@@ -56,13 +65,8 @@ class PaynowController extends Controller
 
     public function handleResult(Request $request)
     {
-        $payment = new Payment();
-        $payment->reference = $request['reference'];
-        $payment->reference = $request['paynowreference'];
-        $payment->status = $request['status'];
-        $payment->poll_url = $request['pollurl'];
-        $payment->save();
-        return response('', 200);
+        $this->paymentService->webhookReciever($request->all());
+        return response('',200);
     }
 
 

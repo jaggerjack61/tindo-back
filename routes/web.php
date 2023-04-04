@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -46,6 +47,12 @@ Route::middleware('auth')->group(function () {
             Route::get('status/deactivate/{user}','deactivateUser')->name('deactivate-user');
             Route::get('access_level/promote/{user}','promoteUser')->name('promote-user');
             Route::get('access_level/demote/{user}','demoteUser')->name('demote-user');
+        });
+    });
+    Route::controller(PaymentsController::class)->group(function () {
+        Route::prefix('/payments')->group(function () {
+            Route::get('','showPayments')->name('show-payments');
+
         });
     });
 });

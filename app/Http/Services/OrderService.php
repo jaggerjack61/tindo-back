@@ -5,23 +5,26 @@ namespace App\Http\Services;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Painting;
+use Illuminate\Support\Facades\Log;
 
 class OrderService{
 
     public function verifyOrder($order)
     {
         foreach($order->items as $item){
-            if(Painting::find($item->id)->status != 'available'){
+            if(Painting::find($item['id'])->status != 'available'){
+                Log::info('available');
                 return false;
             }
-            if(!Painting::find($item->id)->price != $item->price){
+            if(Painting::find($item['id'])->price != $item['price']){
+                Log::info('price');
                 return false;
             }
         }
         return true;
     }
 
-    public function storeOrder($order){
+    public function createOrder($order){
         $ord = new Order();
         $ord->user_id = auth()->user()->id;
         $ord->address = $order->address;
@@ -30,9 +33,9 @@ class OrderService{
         foreach($order->items as $item){
             $ordItem = new OrderItem();
             $ordItem->order_id = $ord->id;
-            $ordItem->item_id = $item->id;
-            $ordItem->name = $item->name;
-            $ordItem->price = $item->price;
+            $ordItem->item_id = $item['id'];
+            $ordItem->item_name = $item['name'];
+            $ordItem->item_price = $item['price'];
             $ordItem->save();
         }
     }

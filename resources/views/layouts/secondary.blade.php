@@ -29,8 +29,8 @@
                         <div data-i18n="Analytics">Dashboard</div>
                     </a>
                 </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
+                <li class="menu-item {{Route::currentRouteName()=='show-payments'?'active':''}}">
+                    <a href="{{route('show-payments')}}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-money"></i>
                         <div data-i18n="Analytics">Payments</div>
                     </a>

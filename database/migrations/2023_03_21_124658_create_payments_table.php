@@ -20,8 +20,10 @@ return new class extends Migration
             $table->string('status')->default('pending');
             $table->string('phone')->nullable();
             $table->float('amount',total: 12,places: 2)->default(0.00);
-            $table->string('polling_url')->nullable();
+            $table->string('poll_url')->nullable();
             $table->string('redirect_url')->nullable();
+            $table->string('paynow_reference')->nullable();
+            $table->float('paynow_amount',total: 12,places: 2)->default(0.00);
             $table->timestamps();
         });
     }
