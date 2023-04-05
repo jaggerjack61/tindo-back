@@ -47,8 +47,8 @@
                         <div data-i18n="Analytics">Messages <span class="rounded bg-danger p-1 text-white {{$syscount['message']>0?'':'d-none'}}">{{$syscount['message']}}</span></div>
                     </a>
                 </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
+                <li class="menu-item  {{Route::currentRouteName()=='show-reports'?'active':''}}">
+                    <a href="{{route('show-reports')}}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-stats"></i>
                         <div data-i18n="Analytics">Reports</div>
                     </a>

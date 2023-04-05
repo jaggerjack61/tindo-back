@@ -9,11 +9,10 @@ class MainController extends Controller
 {
     public function showDashboard()
     {
-        if(auth()){
+        if (auth()) {
             $results = Painting::paginate(30);
-            return view('pages.dashboard',compact('results'));
-        }
-        else{
+            return view('pages.dashboard', compact('results'));
+        } else {
             dd('here');
             return redirect()->route('show-login');
         }
@@ -25,27 +24,26 @@ class MainController extends Controller
         try {
 
 
-           $imageName = time() . '.' . $request->file->extension();
+            $imageName = time() . '.' . $request->file->extension();
 
-           $request->file->move(public_path('images'), $imageName);
+            $request->file->move(public_path('images'), $imageName);
 
 
-           Painting::create([
-               'name' => $request->name,
-               'description' => $request->description,
-               'type' => $request->type,
-               'dimensions' => $request->dimensions,
-               'price' => $request->price,
-               'url' => '/images/' . $imageName,
-               'status' => 'available',
+            Painting::create([
+                'name' => $request->name,
+                'description' => $request->description,
+                'type' => $request->type,
+                'dimensions' => $request->dimensions,
+                'price' => $request->price,
+                'url' => '/images/' . $imageName,
+                'status' => 'available',
 
-           ]);
+            ]);
 
-           return back()->with('success', 'You have successfully upload image.');
-       }
-       catch (\Exception $e){
-           return back()->with('error',$e->getMessage());
-       }
+            return back()->with('success', 'You have successfully upload image.');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     public function editPainting(Request $request)
@@ -61,44 +59,47 @@ class MainController extends Controller
                 'price' => $request->edit_price,
             ]);
             return back()->with('success', 'You have successfully edited the painting.');
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
 
     }
 
-    public function hidePainting($id) {
+    public function hidePainting($id)
+    {
         $painting = Painting::find($id);
         $painting->status = 'hidden';
         $painting->save();
-        return back()->with('success','Painting has been hidden from gallery');
+        return back()->with('success', 'Painting has been hidden from gallery');
     }
 
-    public function deletePainting($id) {
+    public function deletePainting($id)
+    {
         $painting = Painting::find($id);
         $painting->status = 'deleted';
         $painting->save();
-        return back()->with('success','Painting has been deleted');
+        return back()->with('success', 'Painting has been deleted');
     }
 
-    public function sellPainting($id) {
-       $painting = Painting::find($id);
-       $painting->status = 'sold';
-       $painting->save();
-        return back()->with('success','Painting has been marked as sold');
+    public function sellPainting($id)
+    {
+        $painting = Painting::find($id);
+        $painting->status = 'sold';
+        $painting->save();
+        return back()->with('success', 'Painting has been marked as sold');
     }
 
-    public function restorePainting($id) {
+    public function restorePainting($id)
+    {
         $painting = Painting::find($id);
         $painting->status = 'available';
         $painting->save();
-        return back()->with('success','Painting has been marked as available');
+        return back()->with('success', 'Painting has been marked as available');
     }
 
 
-    public function showProfile()
+    public function showReports()
     {
-
+        return view('reports.reports');
     }
 }

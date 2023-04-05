@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/sell/{id}','sellPainting')->name('sell-painting');
         Route::get('/delete/{id}','deletePainting')->name('delete-painting');
         Route::get('/restore/{id}','restorePainting')->name('restore-painting');
+        Route::get('/reports','showReports')->name('show-reports');
     });
     Route::controller(MessageController::class)->group(function () {
         Route::prefix('/messages')->group(function () {

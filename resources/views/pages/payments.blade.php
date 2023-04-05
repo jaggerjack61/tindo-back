@@ -36,7 +36,7 @@
 
                             <tr>
                                 <td>{{$result->order->user->name}}</td>
-                                <td>${{$result->amount}}</td>
+                                <td>${{number_format($result->amount,2)}}</td>
                                 <td>{{$result->order->address}}</td>
                                 <td>{{$result->created_at->diffForHumans()}}</td>
                                 <td>{{$result->order->delivery_status}}</td>
