@@ -7,16 +7,17 @@ use App\Models\OrderItem;
 use App\Models\Painting;
 use Illuminate\Support\Facades\Log;
 
-class OrderService{
+class OrderService
+{
 
     public function verifyOrder($order)
     {
-        foreach($order->items as $item){
-            if(Painting::find($item['id'])->status != 'available'){
+        foreach ($order->items as $item) {
+            if (Painting::find($item['id'])->status != 'available') {
                 Log::info('available');
                 return false;
             }
-            if(Painting::find($item['id'])->price != $item['price']){
+            if (Painting::find($item['id'])->price != $item['price']) {
                 Log::info('price');
                 return false;
             }
@@ -24,13 +25,14 @@ class OrderService{
         return true;
     }
 
-    public function createOrder($order){
+    public function createOrder($order)
+    {
         $ord = new Order();
         $ord->user_id = auth()->user()->id;
         $ord->address = $order->address;
         $ord->reference = $order->reference;
         $ord->save();
-        foreach($order->items as $item){
+        foreach ($order->items as $item) {
             $ordItem = new OrderItem();
             $ordItem->order_id = $ord->id;
             $ordItem->item_id = $item['id'];
@@ -38,6 +40,15 @@ class OrderService{
             $ordItem->item_price = $item['price'];
             $ordItem->save();
         }
+    }
+
+    public function getOrders()
+    {
+        return Order::where('user_id', auth()->user()->id)
+            ->where('status', 'paid')
+            ->orderBy('created_at', 'desc')
+            ->with('items')
+            ->get();
     }
 
 }

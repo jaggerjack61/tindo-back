@@ -25,7 +25,6 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     Route::controller(MainController::class)->group(function () {
         Route::get('/', 'showDashboard')->name('dashboard');
-        Route::get('/profile','showProfile')->name('show-profile');
         Route::post('/','storePainting')->name('store-painting');
         Route::post('/edit','editPainting')->name('edit-painting');
         Route::get('/hide/{id}','hidePainting')->name('hide-painting');
@@ -48,6 +47,8 @@ Route::middleware('auth')->group(function () {
             Route::get('status/deactivate/{user}','deactivateUser')->name('deactivate-user');
             Route::get('access_level/promote/{user}','promoteUser')->name('promote-user');
             Route::get('access_level/demote/{user}','demoteUser')->name('demote-user');
+            Route::get('profile','showProfile')->name('show-profile');
+            Route::post('profile','saveProfile')->name('save-profile');
         });
     });
     Route::controller(PaymentsController::class)->group(function () {

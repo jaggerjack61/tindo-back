@@ -10,7 +10,7 @@ class PaynowService{
     public $id = '15485';
     public $key = 'df033924-f9bb-4056-bc77-934657ee2ab1';
     public $returnUrl = 'https://0e4a-77-246-52-174.eu.ngrok.io';
-    public  $resultUrl = 'https://322c-197-221-253-139.eu.ngrok.io/api/paynow/result';
+    public  $resultUrl = 'https://739c-197-221-253-139.eu.ngrok.io/api/paynow/result';
     public $orderService;
     public $paymentService;
 
@@ -47,15 +47,24 @@ class PaynowService{
     public function makeBankPayment($order)
     {
         if($this->orderService->verifyOrder($order)){
+            $this->orderService->createOrder($order);
             $this->paymentService->createPayment($order);
             $payment=$this->paynow->createPayment($order->reference,$order->email);
             foreach($order->items as $item){
-                $payment->add($item->name,$item->price);
+
+                $payment->add(str_replace(' ','-', $item['name']), $item['price']);
             }
-            $response = $this->paynow->send($payment);
+            $res = $this->paynow->send($payment);
+            if($res->success()){
+                return $res->redirectUrl();
+            }
+            log::info(json_encode($res));
+
             return true;
         }
-        return false;
+        else{
+            return false;
+        }
 
     }
 

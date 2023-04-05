@@ -41,4 +41,6 @@ class AuthController extends Controller
         Auth::logout();
         return redirect()->route('show-login');
     }
+
+
 }

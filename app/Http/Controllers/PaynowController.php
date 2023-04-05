@@ -41,8 +41,9 @@ class PaynowController extends Controller
     public function bankPayment(Request $request)
     {
         try {
-            if ($this->paynowService->makeBankPayment($request->all())) {
-                return response()->json(['message' => 'success']);
+            $url =$this->paynowService->makeBankPayment($request);
+            if ($url) {
+                return response()->json(['message' => 'success','url'=>$url]);
             } else {
                 return response()->json(['message' => 'invalid order']);
             }

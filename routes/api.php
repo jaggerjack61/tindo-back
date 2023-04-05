@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\APIController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaynowController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +44,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/paynow/bank', 'bankPayment');
         Route::post('/paynow/mobile', 'mobilePayment');
         Route::post('/paynow/status', 'paymentStatus');
+    });
+    Route::controller(OrderController::class)->group(function () {
+        Route::get('/order', 'getOrders');
     });
 });
 Route::post('/tokens/create', function (Request $request) {

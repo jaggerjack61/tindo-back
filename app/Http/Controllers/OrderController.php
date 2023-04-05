@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\OrderService;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -19,5 +20,10 @@ class OrderController extends Controller
         $order->delivery_status = 'pending';
         $order->save();
         return back()->with('error','The order is pending delivery');
+    }
+
+    public function getOrders(OrderService $service)
+    {
+        return response()->json(['messages' =>'success','orders'=>$service->getOrders()]);
     }
 }
