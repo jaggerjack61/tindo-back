@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Message;
+use App\Models\Order;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,7 +28,9 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('layouts.secondary', function ($view) {
             $messageCount = Message::where('status','unread')->count();
-            $view->with('messageCount', $messageCount);
+            $orderCount = Order::where('status','Paid')->where('delivery_status','pending')->count();
+            $count = ['message'=>$messageCount, 'order'=>$orderCount];
+            $view->with('syscount', $count);
         });
     }
 }

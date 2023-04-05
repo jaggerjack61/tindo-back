@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -53,6 +54,13 @@ Route::middleware('auth')->group(function () {
         Route::prefix('/payments')->group(function () {
             Route::get('','showPayments')->name('show-payments');
 
+        });
+    });
+
+    Route::controller(OrderController::class)->group(function () {
+        Route::prefix('/order')->group(function () {
+            Route::get('/deliver/{order}','markDelivered')->name('mark-delivered');
+            Route::get('/undeliver/{order}','markUndelivered')->name('mark-undelivered');
         });
     });
 });

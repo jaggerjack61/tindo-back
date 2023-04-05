@@ -36,32 +36,75 @@
 
                             <tr>
                                 <td>{{$result->order->user->name}}</td>
-                                <td>{{$result->amount}}</td>
+                                <td>${{$result->amount}}</td>
                                 <td>{{$result->order->address}}</td>
-                                <td>{{optional($result)->created_at->diffForHumans()}}</td>
-                                <td>{{$result->order->status}}</td>
+                                <td>{{$result->created_at->diffForHumans()}}</td>
+                                <td>{{$result->order->delivery_status}}</td>
                                 <td>
-{{--                                    @if ($result->status == 'unread')--}}
-{{--                                        <a href="{{route('read-payment',[$result->id])}}"--}}
-{{--                                           class="btn btn-sm btn-primary">Mark as Read</a>--}}
-{{--                                    @elseif ($result->status == 'read')--}}
-{{--                                        <a href="{{route('unread-payment',[$result->id])}}"--}}
-{{--                                           class="btn btn-sm btn-secondary">Mark As Unread</a>--}}
+                                    {{--                                    @if ($result->status == 'unread')--}}
+                                    {{--                                        <a href="{{route('read-payment',[$result->id])}}"--}}
+                                    {{--                                           class="btn btn-sm btn-primary">Mark as Read</a>--}}
+                                    {{--                                    @elseif ($result->status == 'read')--}}
+                                    {{--                                        <a href="{{route('unread-payment',[$result->id])}}"--}}
+                                    {{--                                           class="btn btn-sm btn-secondary">Mark As Unread</a>--}}
 
-{{--                                    @endif--}}
-{{--                                    @if ($result->status == 'unread')--}}
-{{--                                        <a href="{{route('deliver-payment',[$result->id])}}"--}}
-{{--                                           class="btn btn-sm btn-outline-primary">Mark as Delivered</a>--}}
-{{--                                    @elseif ($result->status == 'read')--}}
-{{--                                        <a href="{{route('undeliver-payment',[$result->id])}}"--}}
-{{--                                           class="btn btn-sm btn-outline-secondary">Mark As Undelivered</a>--}}
-{{--                                    @endif--}}
+                                    {{--                                    @endif--}}
+                                    {{--                                    @if ($result->status == 'unread')--}}
+                                    {{--                                        <a href="{{route('deliver-payment',[$result->id])}}"--}}
+                                    {{--                                           class="btn btn-sm btn-outline-primary">Mark as Delivered</a>--}}
+                                    {{--                                    @elseif ($result->status == 'read')--}}
+                                    {{--                                        <a href="{{route('undeliver-payment',[$result->id])}}"--}}
+                                    {{--                                           class="btn btn-sm btn-outline-secondary">Mark As Undelivered</a>--}}
+                                    {{--                                    @endif--}}
 
                                     <a href="" class="btn btn-sm btn-success"
                                        onclick="setMessage('{{$result->email}}','{{$result->subject}}','{{$result->content}}','{{$result->name}}')"
-                                       data-bs-toggle="modal" data-bs-target="#viewPaintingModal">View Items</a>
+                                       data-bs-toggle="modal" data-bs-target="#viewPaintingModal{{$result->id}}">View
+                                        Items</a>
+                                    @if($result->order->delivery_status == 'pending')
+                                    <a href="{{route('mark-delivered',[$result->order->id])}}" class="btn btn-sm btn-primary" >Mark as Delivered</a>
+                                    @else
+                                        <a href="{{route('mark-undelivered',[$result->order->id])}}" class="btn btn-sm btn-info" >Mark as Undelivered</a>
+                                    @endif
                                 </td>
+
                             </tr>
+                            <div class="modal fade" id="viewPaintingModal{{$result->id}}" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+
+
+                                            <h5 class="modal-title">Order Items</h5>
+
+
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <span class="col-6 text-primary">Name</span>
+                                                <span class="col-6 text-primary">Price</span>
+                                            </div>
+
+
+
+                                            @foreach($result->order->items as $item)
+                                                <div class="row">
+                                                    <span class="col-6 my-2">{{$item->item_name}}</span>
+                                                    <span class="col-6 my-2">${{$item->item_price}}</span>
+                                                </div>
+
+
+                                            @endforeach
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         @endforeach
                         </tbody>
 

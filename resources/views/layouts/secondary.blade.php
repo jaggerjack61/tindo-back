@@ -32,7 +32,7 @@
                 <li class="menu-item {{Route::currentRouteName()=='show-payments'?'active':''}}">
                     <a href="{{route('show-payments')}}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-money"></i>
-                        <div data-i18n="Analytics">Payments</div>
+                        <div data-i18n="Analytics">Payments <span class="rounded bg-danger p-1 text-white {{$syscount['order']>0?'':'d-none'}}">{{$syscount['order']}}</span></div>
                     </a>
                 </li>
                 <li class="menu-item  {{Route::currentRouteName()=='show-users'?'active':''}}">
@@ -44,7 +44,7 @@
                 <li class="menu-item  {{Route::currentRouteName()=='show-messages'?'active':''}}">
                     <a href="{{route('show-messages')}}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-chat"></i>
-                        <div data-i18n="Analytics">Messages <span class="rounded bg-danger p-1 text-white {{$messageCount>0?'':'d-none'}}">{{$messageCount}}</span></div>
+                        <div data-i18n="Analytics">Messages <span class="rounded bg-danger p-1 text-white {{$syscount['message']>0?'':'d-none'}}">{{$syscount['message']}}</span></div>
                     </a>
                 </li>
                 <li class="menu-item">

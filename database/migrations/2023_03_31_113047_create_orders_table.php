@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('address', length:1000);
             $table->string('reference');
             $table->string('status')->default('pending');
+            $table->string('delivery_status')->default('pending');
             $table->timestamps();
         });
     }

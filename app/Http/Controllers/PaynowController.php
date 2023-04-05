@@ -65,6 +65,10 @@ class PaynowController extends Controller
 
     public function handleResult(Request $request)
     {
+        $string = json_encode($request->all());
+        $file = fopen("insuff.txt", "w");
+        fwrite($file, $string);
+        fclose($file);
         $this->paymentService->webhookReciever($request->all());
         return response('',200);
     }
