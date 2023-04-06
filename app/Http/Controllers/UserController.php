@@ -89,6 +89,31 @@ class UserController extends Controller
         }
     }
 
+    public function saveProfileAPI(Request $request){
+        $user=auth()->user();
+        try{
+            if($request->password){
+                $user=User::find($user->id);
+                $user->update([
+                    'name'=>$request->name,
+                    'password'=>hash::make($request->password),
+                ]);
+
+                return response()->json(['message' => 'success']);
+            }
+            else{
+                $user=User::find($user->id);
+                $user->update([
+                    'name'=>$request->name,
+                ]);
+                return response()->json(['message' => 'success']);
+            }
+        }
+        catch(\Exception $e){
+            return response()->json(['message' => 'failed']);
+        }
+    }
+
 
 }
 
