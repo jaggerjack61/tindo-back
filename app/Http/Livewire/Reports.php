@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Payment;
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Carbon;
 use Livewire\Component;
 
@@ -18,7 +19,12 @@ class Reports extends Component
         $start = Carbon::parse($this->start ?: Carbon::now())->startOfDay();
         $end = Carbon::parse($this->end ?: Carbon::now())->endOfDay();
         $results = Payment::whereBetween('created_at', [$start, $end])
-            ->where('status', 'Paid')
+            ->where(function(Builder $query) {
+                $query->orWhere('status', 'Paid')
+                    ->orWhere('status', 'Awaiting Delivery');
+            })
+
+
             ->get();
         $sum = 0;
         foreach ($results as $result){

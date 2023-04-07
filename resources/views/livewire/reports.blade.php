@@ -9,11 +9,11 @@
             <div class="m-1 row">
                 <label for="html5-date-input" class="col-md-1 col-form-label">Start Date</label>
                 <div class="col-md-4">
-                    <input class="form-control" type="date" wire:model="start" value="2021-06-18" id="html5-date-input"/>
+                    <input class="form-control" type="date" wire:model="start" id="html5-date-input"/>
                 </div>
                 <label for="html5-date-input" class="col-md-1 col-form-label">End Date</label>
                 <div class="col-md-4">
-                    <input class="form-control" wire:model="end" value="2021-06-18" type="date" id="html5-date-input"/>
+                    <input class="form-control" wire:model="end"  type="date" id="html5-date-input"/>
                 </div>
 
 

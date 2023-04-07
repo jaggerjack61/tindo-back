@@ -7,10 +7,10 @@ use Paynow\Payments\Paynow;
 
 class PaynowService{
 
-    public $id = '15485';
-    public $key = 'df033924-f9bb-4056-bc77-934657ee2ab1';
-    public $returnUrl = 'https://0e4a-77-246-52-174.eu.ngrok.io';
-    public  $resultUrl = 'https://739c-197-221-253-139.eu.ngrok.io/api/paynow/result';
+    public $id = '15940';
+    public $key = 'c948f699-74b6-4c28-b5c9-8f89aea6dea3';
+    public $returnUrl = 'https://4ec1-77-246-52-32.eu.ngrok.io';
+    public  $resultUrl = 'https://4ec1-77-246-52-32.eu.ngrok.io/api/paynow/result';
     public $orderService;
     public $paymentService;
 

@@ -46,6 +46,18 @@ class PaymentService
 
             }
         }
+        elseif ($request['status'] == 'Awaiting Delivery') {
+            $order = Order::where('reference', $request['reference'])->first();
+            $order->status = 'Paid';
+            $order->save();
+            foreach ($order->items as $item) {
+                $painting = Painting::find($item->item_id);
+                Log::info($item->name.'-'.$painting->name);
+                $painting->status = 'sold';
+                $painting->save();
+
+            }
+        }
         return response('', 200);
     }
 }
